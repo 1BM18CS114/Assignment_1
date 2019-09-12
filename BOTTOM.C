@@ -2,16 +2,21 @@
 #include<conio.h>
 
 int push(int *top, int obj[]);
-void sort(int top, int obj[]);
+void sort(int top, int obj[], int temp);
 void main(){
-	int obj[10], top = -1, n, i;
+	int obj[10], top = -1, n, i, temp;
 	clrscr();
 	printf("Enter number of values in stack: ");
 	scanf("%d", &n);
 	printf("Enter values for stack(bottom to top)\n");
 	for(i=0;i<n;i++)
 		obj[top] = push(&top, obj);
-	sort(top, obj);
+	temp = obj[0];
+	for(i=0;i<n;i++){
+		if(obj[i] < temp)
+			temp = obj[i];
+		}
+	sort(top, obj, temp);
 	getch();
 	}
 
@@ -31,9 +36,8 @@ int push(int *top, int obj[]){
 		}
 	}
 
-void sort(int top, int obj[]){
-	int i, j, temp;
-	temp = obj[0];
+void sort(int top, int obj[], int temp){
+	int i, j;
 	for(i = 1; i <= top; i++){
 		if(obj[i] <= temp){
 			temp = obj[i];
