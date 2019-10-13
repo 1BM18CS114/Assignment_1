@@ -1,54 +1,56 @@
 #include<stdio.h>
-#include<conio.h>
 
-int push(int *top, int obj[]);
-void sort(int top, int obj[], int temp);
+int pop(int st[], int *top){
+  int val;
+  if(*top == -1){
+     printf("Underflow");
+     return -1;
+  }
+  else{
+    val = st[*top];
+    (*top)--;
+    return val;
+  }
+}
+void push(int st[], int *top, int val){
+  if(*top == 4){
+    printf("Overflow");
+  }
+  else{
+    (*top)++;
+    st[*top] = val;
+  }
+}
+
 void main(){
-	int obj[10], top = -1, n, i, temp;
-	clrscr();
-	printf("Enter number of values in stack: ");
-	scanf("%d", &n);
-	printf("Enter values for stack(bottom to top)\n");
-	for(i=0;i<n;i++)
-		obj[top] = push(&top, obj);
-	temp = obj[0];
-	for(i=0;i<n;i++){
-		if(obj[i] < temp)
-			temp = obj[i];
-		}
-	sort(top, obj, temp);
-	getch();
-	}
+  int i, inp[5], x, s, top_i = -1, temp[5], top_t = -1, res[5], top_r = -1;
+  printf("Enter 5 elements:\n");
+  printf("Enter item 0\n", i);
+  scanf("%d", &x);
+  s = x;
+  push(inp, &top_i, x);
+  for(i = 1;i < 5;i++){
+    printf("Enter item %d\n", i);
+    scanf("%d", &x);
+    if(x < s)
+      s = x;
+    push(inp, &top_i, x);
+  }
+  while(top_i != -1){
+    x = pop(inp, &top_i);
+    if(x == s){
+      push(res, &top_r, x);
+    }
+    else{
+      push(temp, &top_t, x);
+    }
+  }
+  while(top_t != -1){
+    x = pop(temp, &top_t);
+    push(res, &top_r, x);
+  }
+  for(i = 4;i >= 0;i--){
+    printf("%d\n", res[i]);
+  }
+}
 
-int push(int *top, int obj[]){
-	int x;
-	if(*top >= 10){
-		printf("Sorry stack overflow\n\n\n");
-		return obj[*top];
-		}
-
-	else{
-		printf("Enter value to be added:\n");
-		scanf("%d", &x);
-		printf("Value added\n\n\n");
-		(*top)++;
-		return x;
-		}
-	}
-
-void sort(int top, int obj[], int temp){
-	int i, j;
-	for(i = 1; i <= top; i++){
-		if(obj[i] <= temp){
-			temp = obj[i];
-			for(j = i-1; j >= 0; j--){
-				//printf("\n%d %d\n", obj[j+1], obj[j]);
-				obj[j+1] = obj[j];
-				}
-			obj[0] = temp;
-			}
-		}
-	for(i=top; i>=0; i--)
-		printf("%d\n", obj[i]);
-
-	}
