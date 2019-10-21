@@ -1,0 +1,27 @@
+node sort(node first){
+	int swapped = -1;
+	node curr, last, temp;
+	if(first == NULL){
+		printf("Linked list is empty");
+		return first;
+	}
+	else{
+		
+		last = NULL;
+		while(swapped != 0){
+			swapped = 0;
+			curr = first;
+			while(curr->next != last){
+				if(curr->val > (curr->next)->val){
+					temp->val = curr->val; 
+					curr->val = (curr->next)->val;
+					(curr->next)->val = temp->val;
+					}
+				swapped = 1;
+				curr = curr->next;
+				}
+			last = curr;
+			}
+		
+		}
+	}
