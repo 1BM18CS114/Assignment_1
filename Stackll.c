@@ -36,23 +36,38 @@ node ins_b(node first, int val){
 	return first;
 	}
 
-node del_back(node first)
-{
-  node cur,prev;
-  if(first == NULL)
-  {
-    printf("\nList is empty\n");
-  }
-  cur = first;
-  prev = NULL;
-  while(cur->next != NULL)
-  {
-    prev = cur;
-    cur = cur->next;
-  }
-  prev->next = NULL;
-  free(cur);
-  return first;
+node del_back(node first){
+	
+	node temp, prev;
+	prev = first;
+	temp =first;
+	int flag =0;
+	
+	if(first == NULL){
+		printf("STACK UNDERFLOW\n");
+		return first;
+	}
+	else{
+		while(temp->next != NULL){
+			flag = 1;
+			prev = temp;
+			temp = temp->next;			
+		}
+		printf("The value popped is %d\n", temp->val);
+		if(flag == 1){
+			prev->next = NULL;
+			free(temp);		
+			return first;
+		}
+		else{
+			free(temp);
+			first = NULL;
+			return first;
+		}
+		
+	}
+	
+	
 }
 
 void display(node first){
