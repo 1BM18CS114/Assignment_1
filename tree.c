@@ -1,99 +1,138 @@
+#include<conio.h>
 #include<stdio.h>
 #include<stdlib.h>
 
-struct node{
-	int val;
-	struct node *left;
-	struct node *right;
-	};
+struct Node{
+    int value;
+    struct Node *leftChild;
+    struct Node *rightChild;
+};
+typedef struct Node * node;
 
-typedef struct node *NODE;
-
-NODE root = NULL;
-
-NODE getnode(){
-	NODE temp;
-	temp = (NODE)malloc(sizeof(struct node));
-	temp->left = NULL;
-	temp->right = NULL;
+node getNode(int item){
+    node temp;
+    temp = (node)malloc(sizeof(struct Node));
+    temp->value = item;
+    temp->leftChild = NULL;
+    temp->rightChild = NULL;
+    return temp;
 }
 
-NODE insert(NODE root){
-	int val;
-	NODE temp, curr;
-	printf("\nEnter Val:");
-	scanf("%d", &val);
-	if(root == NULL){
-		root = getnode();
-		root->val = val;
-	}
-	else{
-		curr = root;
-		while(curr->left != NULL && curr->right != NULL){
-			if(val < curr->val){
-				curr = curr->left;
-			}
-			else{
-				curr = curr->right;
-			}
-		}
-		temp = getnode();
-		temp->val = val;
-		if(val < curr->val){
-			curr->left = temp;
-		}
-		else{
-			curr->right = temp;
-		}
-	}
-	return root;
+node insert(node root , int item){
+    node curr , temp;
+    temp = getNode(item);
+    if(root == NULL){
+        root = temp;
+        return root;
+    }
+    else{
+          if(item < root->value){
+            root->leftChild = insert(root->leftChild , item);
+          }
+          else if(item >= root->value){
+            root->rightChild = insert(root->rightChild , item);
+          }
+          return root;
+    }
 }
 
-void displayl(NODE first){
-	NODE curr;
-	curr = first;
-	while(curr != NULL){
-		printf("%d\n", curr->val);
-		curr = curr->left;
-		}
-	}
+int checkRoot(node root){
+    if(root == NULL){
+        printf("\nRoot is Null\n");
+        return 0;
+    }
+    else{
+        return 1;
+    }
+}
 
-void displayr(NODE first){
-	NODE curr;
-	curr = first;
-	while(curr != NULL){
-		printf("%d\n", curr->val);
-		curr = curr->right;
-		}
-	}
+void inorder(node root){
+    if(root == NULL){
+        return;
+    }
+    inorder(root->leftChild);
+    printf("%d " , root->value);
+    inorder(root->rightChild);
+}
 
-void main(){
-	int x, val;
-	
-	while(x != 4){
-		printf("\nEnter your choice\n1: Insert\n");
-		//printf("2: Delete\n");
-		printf("3: Display\n");
-		printf("4: Exit\n");
-		scanf("%d", &x);
-			switch(x){
-			case 1:   
-				        root = insert(root);
-				        break;
-   
-            /*case 2:     first = del_front(first);
-                        break;
-				*/
-			case 2:     printf("\nThe elements in the list are:\n");
-			        	displayl(root);
-			        	displayr(root);
-				        break;
-                             
-			}
-		}
-	}
+void preorder(node root){
+    if(root == NULL){
+        return;
+    }
+    printf("%d " , root->value);
+    preorder(root->leftChild);
+    preorder(root->rightChild);
+}
 
-		
-	
-		
-		
+void postorder(node root){
+    if(root == NULL){
+        return;
+    }
+    preorder(root->leftChild);
+    preorder(root->rightChild);   
+    printf("%d " , root->value);
+}
+
+int search(node root , int item){
+    while(root != NULL){
+        if(item > root->value){
+            root = root->rightChild;
+        }
+        else if(item < root->value){
+            root = root->leftChild;
+        }
+        else{
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int main()
+{
+    int ch , item , n ;
+    node root = NULL;
+    printf("Enter the number of elements in binary tree : ");
+    scanf("%d", &n);
+    int ele[n];
+    printf("\nEnter elements of Binary Tree\n");
+    for(int i = 0 ; i < n ; i++){
+        scanf("%d",&ele[i]);
+    }
+    while(ch != 6)
+    {
+        printf("\n\n1.Form Binary search tree\n2.Inorder list\n3.Preorder list\n4.Postorder list\n5.Search an element\n6.Exit\nEnter your choice : ");
+        scanf("%d",&ch);
+        switch(ch){
+            case 1 : for(int i = 0 ; i < n ; i++){
+                       root = insert(root , ele[i]);
+                     }
+                     printf("\nBinary Search Tree formed\n");
+                     break;
+            case 2 : if(checkRoot(root) == 1){
+                       printf("\n\nInorder list : ");
+                       inorder(root);
+                     }
+                     break;
+            case 3 : if(checkRoot(root) == 1){
+                       printf("\n\nPreorder list : ");
+                       preorder(root);
+                     }
+                     break; 
+            case 4 : if(checkRoot(root) == 1){
+                       printf("\n\nPostorder list : ");
+                       postorder(root);
+                     }
+                     break;
+            case 5 : printf("\n\nEnter item to be searched : ");
+			         scanf("%d", &item);
+				     if(search(root,item) == 1)
+				    	printf("\nItem found\n");
+			         else
+					    printf("\nItem not found\n");
+				     break;
+			default : printf("\nInvalid choice\n");
+			          break;
+        }
+    }
+}
